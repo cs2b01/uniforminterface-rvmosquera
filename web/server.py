@@ -13,21 +13,22 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/books')
+@app.route('/users')
 def users():
     db_session = db.getSession(engine)
-    users = db_session.query(entities.Book)
+    users = db_session.query(entities.User)
     data = users[:]
     return Response(json.dumps(data, cls=connector.AlchemyEncoder), mimetype = 'application/json')
 
-@app.route('/create_test_books', methods = ['GET'])
+@app.route('/create_test_user', methods = ['GET'])
 def create_test_books():
     db_session = db.getSession(engine)
-    book = entities.Book(name="Head First HTML5", isbn="12345", title="Head first about HTML5")
-    db_session.add(book)
+    #book = entities.Book(name="Head First HTML5", isbn="12345", title="Head first about HTML5")
+    user = entities.User(code="201810711", name="Raul", surname="Mosquera", password="123D5346")
+    db_session.add(user)
     db_session.commit()
-    return "Test books created!"
+    return "Test user created!"
 
 if __name__ == '__main__':
     app.secret_key = ".."
-    app.run(port=8080, threaded=True, host=('0.0.0.0'))
+    app.run(port=8080, threaded=True, host=('127.0.0.1'))
